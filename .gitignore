@@ -1,0 +1,9 @@
+scss
+gulpfile.js
+static
+static_root
+db.sqlite3
+migrations
+*.pyc
+Pageviews/README.md
+Pageviews/sample-idea=code.py

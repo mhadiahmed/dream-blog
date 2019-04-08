@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}
+	{{category.title}}
+{% endblock title %}
+{% load static %}
+{% block content %}
+	   
+<!--------------------------------------
+Main
+------------------------------------- -->
+<div class="container mt-5 mb-5">
+	<div class="row">
+		<div class="col-md-8">
+			<h5 class="font-weight-bold spanborder"><span>Featured in {{category.title}}</span></h5>
+			<div class="card border-0 mb-5 box-shadow">
+				<div style="background-image: url({% static 'assets/img/demo/1.jpg' %}); height: 350px; background-size: cover; background-repeat: no-repeat;">
+				</div>
+				<div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
+					<h2 class="h2 font-weight-bold">
+					<a class="text-dark" href="{% url 'Post:detail-page' last.id%}">{{last.title}}</a>
+					</h2>
+					<p class="card-text">
+						 {{last.overview}}
+					</p>
+					<div>
+						<small class="d-block"><a class="text-muted" href="./author.html">{{last.author}}</a></small>
+						<small class="text-muted">{{last.timestamp|date:"Y-m-d"}} - {{last.timestamp}}</small>
+					</div>
+				</div>
+			</div>
+			<h5 class="font-weight-bold spanborder"><span>Latest</span></h5>
+			{% for lte in latest %}
+				<div class="mb-3 d-flex justify-content-between">
+					<div class="pr-3">
+						<h2 class="mb-1 h4 font-weight-bold">
+						<a class="text-dark" href="{% url 'Post:detail-page' lte.id%}">{{lte.title}}</a>
+						</h2>
+						<p>
+							 {{lte.overview}}
+						</p>
+						<div class="card-text text-muted small">
+							 {{lte.author}}
+						</div>
+						<small class="text-muted">Dec 12 · 5 min read</small>
+					</div>
+					<img height="120" src="
+						{% if lte.thumbnail %}
+							{{lte.thumbnail.url}}
+						{% else %}
+							{% static 'assets/img/demo/blog8.jpg' %}
+						{% endif %}	
+					">
+				</div>
+			{% endfor %}
+
+		</div>
+		<div class="col-md-4 pl-4">
+			<div class="sticky-top">
+				<h5 class="font-weight-bold spanborder"><span>Popular in Science</span></h5>
+				<ol class="list-featured">
+					{% for po in Popular %}	
+				
+					<li>
+					<span>
+					<h6 class="font-weight-bold">
+					<a href="{% url 'Post:detail-page' po.id%}" class="text-dark">{{po.title}}</a>
+					</h6>
+					<p class="text-muted">
+						{{po.author}}
+					</p>
+					</span>
+					</li>
+					{% endfor %}
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+    
+<div class="container pt-4 pb-4">
+	<div class="border p-5 bg-lightblue">
+		<div class="row justify-content-between">
+			<div class="col-md-6">
+				<h5 class="font-weight-bold secondfont">Become a member</h5>
+				 Get the latest news right in your inbox. It's free and you can unsubscribe at any time. We hate spam as much as we do, so we never spam!
+			</div>
+			<div class="col-md-6">
+				<form method="post" action="{% url 'newsletter_singup' %}">
+				<div class="row">
+					{% csrf_token %}
+					{{newslatterform}}
+					<div class="col-md-12 mt-3">
+						<button type="submit" class="btn btn-success btn-block">Subscribe</button>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Main -->
+{% endblock content %}

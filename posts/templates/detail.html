@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% block title %}
+	{{post.title}}
+{% endblock title %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    
+<!--------------------------------------
+HEADER
+------------------------------------- -->
+<div class="container">
+	<div class="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
+		<div class="h-100 tofront">
+			<div class="row justify-content-between">
+				<div class="col-md-6 pt-6 pb-6 pr-6 align-self-center">
+					<p class="text-uppercase font-weight-bold">
+						<a class="text-danger" href="{% if post.categories %}{% url 'Post:category' post.categories.slug%}{% endif %}">
+							{% if post.categories %}
+								{{post.categories.title}}
+							{% else %}
+								Stories
+							{% endif %}
+						</a>
+					</p>
+					<h1 class="display-4 secondfont mb-3 font-weight-bold">{{post.title}}</h1>
+					
+					<div class="d-flex align-items-center">
+						<img class="rounded-circle" src="
+								{% if post.author.profile_picture %}
+									{{post.author.profile_picture.url}}
+								{% else %}
+									{% static 'assets/img/demo/avatar2.jpg' %}
+								{% endif %}
+								
+
+						" width="70">
+						<small class="ml-2">{{post.author}}<span class="text-muted d-block">{{post.timestamp|date:"Y-m-d"}} - {{post.timestamp}}</span>
+						</small>
+					</div>
+				</div>
+				<div class="col-md-6 pr-0">
+					<img src="{% if post.thumbnail %}
+					            {{post.thumbnail.url}}
+							  {% else %}
+							    {% static 'assets/img/demo/intro.jpg' %}
+							  {% endif %}
+							  
+							  ">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Header -->
+
+<!--------------------------------------
+MAIN
+------------------------------------- -->
+<div class="container pt-4 pb-4">
+	<div class="row justify-content-center">
+		<div class="col-lg-2 pr-4 mb-4 col-md-12">
+			<div class="sticky-top text-center">
+				<div class="text-muted">
+					Share this
+				</div>
+				<div class="share d-inline-block">
+					<!-- AddToAny BEGIN -->
+					<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+						<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+						<a class="a2a_button_facebook"></a>
+						<a class="a2a_button_twitter"></a>
+					</div>
+					<script async src="https://static.addtoany.com/menu/page.js"></script>
+					<!-- AddToAny END -->
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 col-lg-8">
+			<article class="article-post">
+			<p>
+				{{post.overview}}
+			</p>
+			</article>
+			<div class="main">
+                                <p class="lead"><strong>Comments</strong></p>
+                                {% if request.user.is_authenticated%}
+                                <form method="Post" action="">
+                                    {% csrf_token %}
+                                    {{coments_form|crispy}}
+                                    <button  type="submit"  class="btn btn-info">Comment</button>
+                                </form>
+                                {%else%}
+                                <p>you must login to commint</p>
+                                {%endif%}
+
+                                    {% for comment in comments%}
+                                    <hr>
+                                    <blockquote>
+                                      <p>{{comment.content}}</p>
+                                        <footer>via {{comment.user}} | {{comment.timestamp|timesince}} ago| {%if comment.Child.count > 0 %}{{comment.Child.count}} Comment{%if comment.Child.count > 1 %}s{%endif%} | {%endif%}
+                                            <a class = 'coment-r-btn' href='#'> Reply </a> | <a class = '' href='{{comment.get_absolute_url}}'> thread </a></footer>
+                                        <div class='comment-Reply' style="display:none;">
+                                        {% for coment_child in comment.Child%}
+                                    <blockquote>
+                                          <p>{{coment_child.content}}</p>
+                                          <footer>via {{coment_child.user}} | {{coment_child.timestamp|timesince}} ago</footer>
+                                          
+                                    </blockquote>
+                                        {% endfor %}
+                                            {% if request.user.is_authenticated%}
+                                            <form method="Post" action="">
+                                                {% csrf_token %}
+                                                {{coments_form|crispy}}
+                                                <input type="hidden" name="parent_id" value="{{comment.id}}">
+                                                <input type="submit" value="Reply" class="btn btn-default">
+                                            </form>
+                                            {%else%}
+                                            <p>you must login to commint</p>
+                                            {%endif%}
+
+                                        </div>
+                                    </blockquote>
+                                     
+                                    {% endfor %}
+                                    </div>
+			<div class="border p-5 bg-lightblue">
+				<div class="row justify-content-between">
+					<div class="col-md-5 mb-2 mb-md-0">
+						<h5 class="font-weight-bold secondfont">Become a member</h5>
+						 Get the latest news right in your inbox. We never spam!
+					</div>
+					<div class="col-md-7">
+						<div class="row">
+							<form method="post" action="{% url 'newsletter_singup' %}">
+							<div class="col-md-12">
+								
+									{% csrf_token %}
+									{{newslatterform}}
+								
+								
+							</div>
+							<div class="col-md-12 mt-2">
+								<button type="submit" class="btn btn-success btn-block">Subscribe</button>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+    
+<div class="container pt-4 pb-4">
+	<h5 class="font-weight-bold spanborder"><span>Read next</span></h5>
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="card border-0 mb-4 box-shadow h-xl-300">              
+                <div style="background-image: url({%static 'assets/img/demo/1.jpg'%}); height: 150px;    background-size: cover;    background-repeat: no-repeat;"></div>               
+				<div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
+					<h2 class="h4 font-weight-bold">
+					<a class="text-dark" href="{% url 'Post:detail-page' lats_one.id%}">{{lats_one.title}}</a>
+					</h2>
+					<p class="card-text">
+						 {{lats_one.overview}}
+					</p>
+					<div>
+						<small class="d-block"><a class="text-muted" href="{% url 'Post:detail-page' lats_one.id%}">{{lats_one.author}}</a></small>
+						<small class="text-muted">{{lats_one.timestamp|date:"Y-m-d"}} - {{lats_one.timestamp}}</small>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="flex-md-row mb-4 box-shadow h-xl-300">
+            {% for post in posts %}
+				<div class="mb-3 d-flex align-items-center">
+					<img height="80" src=" {%if post.thumbnail%}{{post.thumbnail.url}}{% else %}{%static 'assets/img/demo/blog4.jpg'%}{%endif%}">
+					<div class="pl-3">
+						<h2 class="mb-2 h6 font-weight-bold">
+						<a class="text-dark" href="{% url 'Post:detail-page' post.id%}">{{post.title}}</a>
+						</h2>
+						<div class="card-text text-muted small">
+							 {{post.overview}}
+						</div>
+						<small class="text-muted">{{post.timestamp|date:"Y-m-d"}} - {{post.timestamp}}</small>
+					</div>
+				</div>
+            {% endfor %}
+			</div>
+		</div>
+		
+	</div>
+</div>
+<!-- End Main -->
+{% endblock content %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			$(".coment-r-btn").click(function(event){
+				event.preventDefault();
+				$(this).parent().next(".comment-Reply").toggle();
+
+			});
+		});
+	</script>
+{% endblock javascript %}

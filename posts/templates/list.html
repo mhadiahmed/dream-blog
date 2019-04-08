@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Simplify
+{% endblock title %}
+    
+
+
+{% block content %}
+ <!-- End Navbar -->
+    <!-- ------------------------------------ HEADER ------------------------------------- -->
+    <div class="container">
+        <div class="jumbotron jumbotron-fluid mb-3 pt-0 pb-0 bg-lightblue position-relative">
+            <div class="pl-4 pr-0 h-100 tofront">
+                <div class="row justify-content-between">
+                    <div class="col-md-6 pt-6 pb-6 align-self-center">
+                        <h1 class="secondfont mb-3 font-weight-bold">Simplify is an HTML Bootstrap Template for Professional Blogging</h1>
+                        <p class="mb-3">
+                            Beautifully crafted with the latest technologies, SASS & Bootstrap 4.1.3, Simplify is the perfect design for your professional blog. Homepage, post article and category layouts available.
+                        </p>
+                        <a href="./article.html" class="btn btn-dark">Read More</a>
+                    </div>
+                    <div class="col-md-6 d-none d-md-block pr-0" style="background-size:cover;background-image:url({%static 'assets/img/demo/home.jpg'%});">	</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header -->
+    <!--------------------------------------
+MAIN
+------------------------------------- -->
+    <div class="container pt-4 pb-4">
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="card border-0 mb-4 box-shadow h-xl-300">              
+                <div style="background-image: url({%static 'assets/img/demo/1.jpg'%}); height: 150px;    background-size: cover;    background-repeat: no-repeat;"></div>               
+				<div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
+					<h2 class="h4 font-weight-bold">
+					<a class="text-dark" href="{% url 'Post:detail-page' lats_one.id%}">{{lats_one.title}}</a>
+					</h2>
+					<p class="card-text">
+						 {{lats_one.overview}}
+					</p>
+					<div>
+						<small class="d-block"><a class="text-muted" href="{% url 'Post:detail-page' lats_one.id%}">{{lats_one.author}}</a></small>
+						<small class="text-muted">{{lats_one.timestamp|timesince}} - {{lats_one.timestamp|date:"Y-m-d"}}</small>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="flex-md-row mb-4 box-shadow h-xl-300">
+            {% for post in posts %}
+				<div class="mb-3 d-flex align-items-center">
+					<img height="80" src=" {%if post.thumbnail%}{{post.thumbnail.url}}{% else %}{%static 'assets/img/demo/blog4.jpg'%}{%endif%}">
+					<div class="pl-3">
+						<h2 class="mb-2 h6 font-weight-bold">
+						<a class="text-dark" href="{% url 'Post:detail-page' post.id%}">{{post.title}}</a>
+						</h2>
+						<div class="card-text text-muted small">
+							 {{post.overview}}
+						</div>
+						<small class="text-muted">{{post.timestamp|date:"Y-m-d"}} - {{post.timestamp|timesince}}</small>
+					</div>
+				</div>
+            {% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row justify-content-between">
+		<div class="col-md-8">
+			<h5 class="font-weight-bold spanborder"><span>All Stories</span></h5>
+			{% for pos in posts %}
+				<div class="mb-3 d-flex justify-content-between">
+					<div class="pr-3">
+						<h2 class="mb-1 h4 font-weight-bold">
+						<a class="text-dark" href="{% url 'Post:detail-page' pos.id%}">{{pos.title}}</a>
+						</h2>
+						<p>
+							{{pos.overview}}
+						</p>
+						<div class="card-text text-muted small">
+							 {{pos.author}}
+						</div>
+						<small class="text-muted">{{pos.timestamp|date:"Y-m-d"}} - {{pos.timestamp|timesince}}</small>
+					</div>
+					<img height="120" src="
+						{% if pos.thumbnail %}
+							{{pos.thumbnail.url}}
+						{% else %}
+							{%static 'assets/img/demo/blog8.jpg'%}
+						{% endif %}"
+					>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="col-md-4 pl-4">
+            <h5 class="font-weight-bold spanborder"><span>Popular</span></h5>
+			<ol class="list-featured">
+				{% for po in Popular %}	
+				
+				<li>
+				<span>
+				<h6 class="font-weight-bold">
+				<a href="{% url 'Post:detail-page' po.id%}" class="text-dark">{{po.title}}</a>
+				</h6>
+				<p class="text-muted">
+					{{po.author}}
+				</p>
+				</span>
+				</li>
+				{% endfor %}
+			</ol>
+		</div>
+	</div>
+</div>
+    
+
+
+        
+{% endblock content %}
+    

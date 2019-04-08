@@ -1,0 +1,17 @@
+# in this page form control what you like to send to people
+{% extends 'base.html' %}
+{%block title%} send{% endblock%}
+
+{% block content%}
+<div class="container">
+        <div class="row">
+            <div class="cool">
+
+            <form action="" method="post">
+            {% csrf_token %}
+            {{ newscreateform }}
+            </form>
+            </div>
+        </div>
+</div>
+ {% endblock%}  

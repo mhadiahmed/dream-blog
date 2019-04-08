@@ -1,0 +1,47 @@
+<nav class="topnav navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'Post:index' %}"><strong>Simplify</strong></a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarColor02" style="">
+            <ul class="navbar-nav mr-auto d-flex align-items-center">
+                {% for ctg in categories %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Post:category' ctg.slug%}">{{ctg.title}}</a>
+                    </li>
+                {% endfor %}
+                <li class="nav-item">
+                <a class="nav-link" href="./index.html">Intro <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="./article.html">Culture</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="./article.html">Tech</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="./article.html">Politics</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="./article.html">Health</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'contactForm:contact' %}">Contact</a>
+                </li>            
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item" style="margin-left:410px">
+                        <a class="nav-link " href="{% url 'accounts:logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item" style="margin-left:414px">
+                        <a class="nav-link " href="{% url 'accounts:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item" >
+                        <a  class="nav-link " href="{% url 'accounts:singup' %}">Singup</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    </nav>
