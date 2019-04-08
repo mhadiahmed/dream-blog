@@ -8,7 +8,7 @@ from hitcount.views import HitCountMixin
 from Pageviews.signals import object_viewed_signal
 from Pageviews.models import ObjectViewed
 def index(request):
-    queryset = Post.objects.filter(featured=True)
+    queryset = Post.objects.filter(featured=False)
     context = {
         'object_list': queryset
     }
@@ -23,13 +23,13 @@ def blog(request):
 def list(request,category_slug=None):
     category = None
     categories = Category.objects.all()
-    posts = Post.objects.all().filter(featured=True)
-    Popular = Post.objects.filter(featured=True).order_by('-comment_count')[:5]
+    posts = Post.objects.all().filter(featured=False)
+    Popular = Post.objects.filter(featured=False).order_by('-comment_count')[:5]
     if category_slug:
         category = get_object_or_404(Category,slug=category_slug)
         posts = posts.filter(categories=category)
-        latest = Post.objects.filter(featured=True,categories=category).order_by('-timestamp')[0:3]
-        last = Post.objects.filter(featured=True).last()
+        latest = Post.objects.filter(featured=False,categories=category).order_by('-timestamp')[0:3]
+        last = Post.objects.filter(featured=False).last()
         context = {
         'posts':posts,
         'categories':categories,
@@ -40,7 +40,7 @@ def list(request,category_slug=None):
         }
         return render(request,'categorys.html',context)
 
-    lats_one = Post.objects.filter(featured=True).last()
+    lats_one = Post.objects.filter(featured=False).last()
     # before_last = Post.objects.all().last()
     context = {
         'posts':posts,
@@ -54,7 +54,7 @@ def list(request,category_slug=None):
 def detail(request,id):
     lats_one = Post.objects.all().last()
     # before_last = Post.objects.all().last()
-    posts = Post.objects.all().filter(featured=True)
+    posts = Post.objects.all().filter(featured=False)
     post = get_object_or_404(Post,id=id)
     hit_count = HitCount.objects.get_for_object(post)
     hit_count_response = HitCountMixin.hit_count(request, hit_count)

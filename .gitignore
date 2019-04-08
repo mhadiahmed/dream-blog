@@ -1,6 +1,5 @@
 scss
 gulpfile.js
-static
 static_root
 db.sqlite3
 migrations

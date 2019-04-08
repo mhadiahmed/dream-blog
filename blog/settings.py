@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'contact_form.apps.ContactFormConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
+    'hitcount'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
